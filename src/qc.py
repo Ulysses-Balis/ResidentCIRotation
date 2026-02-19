@@ -88,13 +88,11 @@ def get_qc_data(analyzer_name):
     query = text(f"""
     SELECT 
         qc.timestamp,
-        qc.result AS qc_value,
-        r.result AS patient_result
-    FROM results r
-    JOIN qc_results qc ON r.qc_run = qc.id
-    JOIN analyzers a ON r.analyzer = a.id
+        qc.result
+    FROM qc_results qc
+    JOIN analyzers a ON qc.analyzer = a.id
     WHERE a.name = '{analyzer_name}'
-    ORDER BY qc.timestamp, r.result;
+    ORDER BY qc.timestamp, qc.result;
     """)
     
     with engine.connect() as conn:
